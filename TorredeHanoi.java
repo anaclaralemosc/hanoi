@@ -1,39 +1,34 @@
+import java.util.Scanner;
+
 public class TorredeHanoi {
-    private int movimentos;
+    private int movimentos = 0;
 
-    public TorredeHanoi() {
-        this.movimentos = 0;
-    }
-
-    public void resolverHanoi(int n, char origem, char destino, char auxiliar) {
+    public void hanoi(int n, char origem, char destino, char auxiliar) {
         if (n == 1) {
             System.out.println("Mova o disco 1 de " + origem + " para " + destino);
             movimentos++;
-        } else {
-            resolverHanoi(n - 1, origem, auxiliar, destino);
-            System.out.println("Mova o disco " + n + " de " + origem + " para " + destino);
-            movimentos++;
-            resolverHanoi(n - 1, auxiliar, destino, origem);
+            return;
         }
+
+        hanoi(n - 1, origem, auxiliar, destino);
+        System.out.println("Mova o disco " + n + " de " + origem + " para " + destino);
+        movimentos++;
+        hanoi(n - 1, auxiliar, destino, origem);
     }
 
-    public int jogarTorreHanoi(int numDiscos) {
-        movimentos = 0;
-        resolverHanoi(numDiscos, 'A', 'C', 'B');
+    public int getMovimentos() {
         return movimentos;
     }
 
-    @Test
-    public void testResolverHanoi() {
+    public static void main(String[] args) {
         TorreHanoi torreHanoi = new TorreHanoi();
-        torreHanoi.resolverHanoi(3, 'A', 'C', 'B');
-        assertEquals(7, torreHanoi.movimentos);
-    }
+        Scanner scanner = new Scanner(System.in);
 
-    @Test
-    public void testJogarTorreHanoi() {
-        TorreHanoi torreHanoi = new TorreHanoi();
-        int movimentos = torreHanoi.jogarTorreHanoi(4);
-        assertEquals(15, movimentos);
-    }
+        System.out.print("Digite o número de discos: ");
+        int numeroDiscos = scanner.nextInt();
+
+        torreHanoi.hanoi(numeroDiscos, 'A', 'C', 'B');
+
+        System.out.println("\nQuantidade total de movimentos: " + torreHanoi.getMovimentos());
+    }
 }
